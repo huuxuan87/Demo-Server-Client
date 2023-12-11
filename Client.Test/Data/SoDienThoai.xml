@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<DataSet>
+	<DataTable>
+		<Row>
+			<SoDienThoai>0860000000</SoDienThoai>
+			<Expected>true</Expected>
+		</Row>
+		<Row>
+			<SoDienThoai>0960000000</SoDienThoai>
+			<Expected>true</Expected>
+		</Row>
+		<Row>
+			<SoDienThoai>0970000000</SoDienThoai>
+			<Expected>true</Expected>
+		</Row>
+		<Row>
+			<SoDienThoai>0980000000</SoDienThoai>
+			<Expected>true</Expected>
+		</Row>
+		<Row>
+			<SoDienThoai>120860000000</SoDienThoai>
+			<Expected>false</Expected>
+		</Row>
+		<Row>
+			<SoDienThoai>096000000</SoDienThoai>
+			<Expected>false</Expected>
+		</Row>
+	</DataTable>
+</DataSet>

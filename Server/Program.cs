@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Server.Commons;
 using Server.Models;
 using Server.Services;
 
@@ -11,8 +10,8 @@ var services = builder.Services;
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 services.AddScoped<INguoiChoiService, NguoiChoiService>();
 services.AddScoped<IDatSoService, DatSoService>();
-services.AddScoped<IVNVCTestContextProcedures,  VNVCTestContextProcedures>();
-services.AddSingleton(c => new SecureRandom());
+services.AddScoped<IVNVCTestContextProcedures, VNVCTestContextProcedures>();
+services.AddSingleton(c => new Random());
 
 // Database
 builder.Services.AddDbContext<VNVCTestContext>(

@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new System.Windows.Forms.ListViewItem.ListViewSubItem[] {
+            System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem(new System.Windows.Forms.ListViewItem.ListViewSubItem[] {
             new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "1"),
             new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "1", System.Drawing.SystemColors.WindowText, System.Drawing.SystemColors.Window, new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)))),
             new System.Windows.Forms.ListViewItem.ListViewSubItem(null, "22/11/2023 - 23 gio"),
@@ -64,6 +64,7 @@
             this.wTimer = new System.ComponentModel.BackgroundWorker();
             this.panelLeft = new System.Windows.Forms.Panel();
             this.panelRight = new System.Windows.Forms.Panel();
+            this.pbThoiGian = new System.Windows.Forms.ProgressBar();
             this.grpDatSo.SuspendLayout();
             this.grpThongTin.SuspendLayout();
             this.grpSoDaDat.SuspendLayout();
@@ -96,10 +97,11 @@
             // 
             // grpDatSo
             // 
-            this.grpDatSo.Controls.Add(this.lblClock);
             this.grpDatSo.Controls.Add(this.pbDatSo);
             this.grpDatSo.Controls.Add(this.btnDatSo);
             this.grpDatSo.Controls.Add(this.tvDatSo);
+            this.grpDatSo.Controls.Add(this.lblClock);
+            this.grpDatSo.Controls.Add(this.pbThoiGian);
             this.grpDatSo.Location = new System.Drawing.Point(12, 12);
             this.grpDatSo.Name = "grpDatSo";
             this.grpDatSo.Size = new System.Drawing.Size(210, 128);
@@ -112,10 +114,11 @@
             this.lblClock.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblClock.AutoSize = true;
-            this.lblClock.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblClock.Location = new System.Drawing.Point(47, 102);
+            this.lblClock.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblClock.ForeColor = System.Drawing.Color.Blue;
+            this.lblClock.Location = new System.Drawing.Point(39, 101);
             this.lblClock.Name = "lblClock";
-            this.lblClock.Size = new System.Drawing.Size(110, 13);
+            this.lblClock.Size = new System.Drawing.Size(129, 13);
             this.lblClock.TabIndex = 9;
             this.lblClock.Text = "22/11/2023 17:30:05";
             // 
@@ -264,7 +267,7 @@
             this.lvSoDaDat.GridLines = true;
             this.lvSoDaDat.HideSelection = false;
             this.lvSoDaDat.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
+            listViewItem9});
             this.lvSoDaDat.Location = new System.Drawing.Point(3, 16);
             this.lvSoDaDat.Name = "lvSoDaDat";
             this.lvSoDaDat.Size = new System.Drawing.Size(354, 276);
@@ -284,20 +287,19 @@
             // 
             // colNgayGioKetQua
             // 
-            this.colNgayGioKetQua.Text = "Ngày - Giờ kết quả";
-            this.colNgayGioKetQua.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.colNgayGioKetQua.Text = "Ngày giờ ra kết quả";
             this.colNgayGioKetQua.Width = 120;
             // 
             // colKetQuaQuaySo
             // 
             this.colKetQuaQuaySo.Text = "Kết quả quay số";
             this.colKetQuaQuaySo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.colKetQuaQuaySo.Width = 100;
+            this.colKetQuaQuaySo.Width = 90;
             // 
             // colDaTrung
             // 
-            this.colDaTrung.Text = "Đã trúng";
-            this.colDaTrung.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.colDaTrung.Text = "Thông báo";
+            this.colDaTrung.Width = 80;
             // 
             // wDatSo
             // 
@@ -343,6 +345,16 @@
             this.panelRight.Name = "panelRight";
             this.panelRight.Size = new System.Drawing.Size(372, 318);
             this.panelRight.TabIndex = 10;
+            // 
+            // pbThoiGian
+            // 
+            this.pbThoiGian.Location = new System.Drawing.Point(43, 113);
+            this.pbThoiGian.MarqueeAnimationSpeed = 1;
+            this.pbThoiGian.Name = "pbThoiGian";
+            this.pbThoiGian.Size = new System.Drawing.Size(121, 3);
+            this.pbThoiGian.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.pbThoiGian.TabIndex = 10;
+            this.pbThoiGian.Visible = false;
             // 
             // MainForm
             // 
@@ -398,5 +410,6 @@
         private System.ComponentModel.BackgroundWorker wTimer;
         private System.Windows.Forms.Panel panelLeft;
         private System.Windows.Forms.Panel panelRight;
+        private System.Windows.Forms.ProgressBar pbThoiGian;
     }
 }

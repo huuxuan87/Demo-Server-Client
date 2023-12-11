@@ -2,7 +2,7 @@
 
 namespace Server.Extensions
 {
-    public static class ObjectExtensions
+    public static class ObjectExtension
     {
         public static void SetPropertyByName(this object obj, string propertyName, object newValue)
         {

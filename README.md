@@ -34,3 +34,13 @@ Hướng dẫn cài đặt
 
 ### Chạy project Server, Client
 Cấu hình Solution để chạy debug cùng lúc cả hai, hoặc publish Server để chạy nhiều Client
+
+### Chạy project Client.Test để test cơ bản
+
+Cấu hình **app.config** như project Client
+~~~
+...
+<appSettings>
+    <add key="apiUrl" value="..." />
+...
+~~~

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Client.Extensions
 {
-    public static class DateTimeExtensions
+    public static class DateTimeExtension
     {
         public static DateTime GetValueEx(this DateTime? dateTime)
         {

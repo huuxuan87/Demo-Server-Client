@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Server.Commons;
 using Server.Extensions;
 using Server.Models;
 
@@ -12,9 +11,9 @@ namespace Server.Services
         private readonly IVNVCTestContextProcedures _sp;
         private readonly IMapper _mapper;
         private readonly ILogger<DatSoService> _logger;
-        private readonly SecureRandom _random;
+        private readonly Random _random;
 
-        public DatSoService(VNVCTestContext context, IVNVCTestContextProcedures sp, IMapper mapper, ILogger<DatSoService> logger, SecureRandom random)
+        public DatSoService(VNVCTestContext context, IVNVCTestContextProcedures sp, IMapper mapper, ILogger<DatSoService> logger, Random random)
         {
             _context = context;
             _sp = sp;

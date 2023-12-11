@@ -5,37 +5,37 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Client.Extensions
+namespace Server.Extensions
 {
-    public static class StringExtensions
+    public static class StringExtension
     {
-        public static string ToStringEx(this object str)
+        public static string ToStringEx(this string? str)
         {
             if (str == null) return string.Empty;
             return str.ToString();
         }
 
-        public static string TrimEx(this string str)
+        public static string TrimEx(this string? str)
         {
             return str.ToStringEx().Trim();
         }
 
-        public static string GetOnlyNumbers(this string str)
+        public static string GetOnlyNumbers(this string? str)
         {
-            var rs = str;
+            var rs = str.ToStringEx();
             string pattern = "\\D";
             Regex regex = new Regex(pattern);
 
-            rs = regex.Replace(str, "");
+            rs = regex.Replace(rs, "");
             return rs;
         }
 
-        public static bool IsFullNameValid(this string str)
+        public static bool IsFullNameValid(this string? str)
         {
             return str.TrimEx().Contains(" ");
         }
 
-        public static string GetLastName(this string str)
+        public static string GetLastName(this string? str)
         {
             var rs = string.Empty;
             if (str.IsFullNameValid())
@@ -45,7 +45,7 @@ namespace Client.Extensions
             return rs;
         }
 
-        public static string GetFirstName(this string str)
+        public static string GetFirstName(this string? str)
         {
             var rs = string.Empty;
             if (str.IsFullNameValid())
@@ -57,10 +57,10 @@ namespace Client.Extensions
             return rs;
         }
 
-        public static bool IsPhoneNumberValid(this string phoneNumber, string regex = @"^(0[1-9]|84[1-9])(\d{8,9})$")
+        public static bool IsPhoneNumberValid(this string? phoneNumber, string regex = @"^(0[1-9]|84[1-9])(\d{8,9})$")
         {
             Regex phoneRegex = new Regex(regex);
-            return phoneRegex.IsMatch(phoneNumber);
+            return phoneRegex.IsMatch(phoneNumber.ToStringEx());
         }
     }
 }

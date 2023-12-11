@@ -1,11 +1,13 @@
 ﻿using Autofac;
 using AutoMapper;
+using Client.Config;
 using Client.Helpers;
 using Client.Models;
 using Client.Views;
 using Server.Services;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -36,6 +38,7 @@ namespace Client
             builder.RegisterInstance((new MapperConfiguration(cf => cf.AddProfile<CustomerProfile>())).CreateMapper());
             builder.RegisterType<NguoiChoiService>().As<INguoiChoiService>();
             builder.RegisterType<DatSoService>().As<IDatSoService>();
+            builder.RegisterType<ConfigAppSetting>().As<IConfigAppSetting>().SingleInstance();
 
             #endregion
 
@@ -46,15 +49,6 @@ namespace Client
             var startForm = container.Resolve<StartForm>();
 
             Application.Run(startForm);
-        }
-    }
-
-    internal class CustomerProfile : Profile
-    {
-        public CustomerProfile()
-        {
-            CreateMap<ApiRequestResult<DatSoModel>, ApiRequestResult>()
-                .ForMember(dest => dest.Result, opt => opt.Ignore());
         }
     }
 }

@@ -12,10 +12,9 @@ namespace Client.Helpers
 {
     public static class ApiRequestHelper
     {
-        public static ApiRequestResult<T> Get<T>(string resource, object data = null)
+        public static ApiRequestResult<T> Get<T>(string apiUrl, string resource, object data = null)
         {
             var rs = new ApiRequestResult<T>();
-            var apiUrl = ConfigurationManager.AppSettings["apiUrl"];
             using (var client = new RestClient(apiUrl))
             {
                 var request = new RestRequest(resource, Method.Get);
@@ -41,10 +40,9 @@ namespace Client.Helpers
             return rs;
         }
 
-        public static ApiRequestResult<T> Post<T>(string resource, object data = null)
+        public static ApiRequestResult<T> Post<T>(string apiUrl, string resource, object data = null)
         {
             var rs = new ApiRequestResult<T>();
-            var apiUrl = ConfigurationManager.AppSettings["apiUrl"];
             using (var client = new RestClient(apiUrl))
             {
                 var request = new RestRequest(resource, Method.Post);
@@ -70,10 +68,9 @@ namespace Client.Helpers
             return rs;
         }
 
-        public static ApiRequestResult<T> Put<T>(string resource, object data = null)
+        public static ApiRequestResult<T> Put<T>(string apiUrl, string resource, object data = null)
         {
             var rs = new ApiRequestResult<T>();
-            var apiUrl = ConfigurationManager.AppSettings["apiUrl"];
             using (var client = new RestClient(apiUrl))
             {
                 var request = new RestRequest(resource, Method.Put);
@@ -99,10 +96,9 @@ namespace Client.Helpers
             return rs;
         }
 
-        public static ApiRequestResult Put(string resource, object data = null)
+        public static ApiRequestResult Put(string apiUrl, string resource, object data = null)
         {
             var rs = new ApiRequestResult();
-            var apiUrl = ConfigurationManager.AppSettings["apiUrl"];
             using (var client = new RestClient(apiUrl))
             {
                 var request = new RestRequest(resource, Method.Put);

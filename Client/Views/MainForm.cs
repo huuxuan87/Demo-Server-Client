@@ -25,7 +25,7 @@ namespace Client.Views
         private readonly INguoiChoiService _nguoiChoiService;
         private readonly IDatSoService _datSoService;
         private DateTime _thoiGian;
-        private int _gioGetSoDaDatTiepTheo;
+        private DateTime _thoiGianGetDatSoTiepTheo;
 
         public MainForm(ILifetimeScope lifetimeScope, INguoiChoiService nguoiChoiService, IDatSoService datSoService)
         {
@@ -33,8 +33,6 @@ namespace Client.Views
             _lifetimeScope = lifetimeScope;
             _nguoiChoiService = nguoiChoiService;
             _datSoService = datSoService;
-            _thoiGian = DateTime.Now;
-            _gioGetSoDaDatTiepTheo = -1;
         }
 
         #endregion
@@ -47,10 +45,12 @@ namespace Client.Views
             tvDatSo.Focus();
             lblHoTen.ResetText();
             lblNgaySinh.ResetText();
-            lblNgaySinh.ResetText();
+            lblDienThoai.ResetText();
             lblClock.ResetText();
             lvSoDaDat.ResetText();
             lvSoDaDat.Items.Clear();
+            _thoiGian = DateTime.Now;
+            _thoiGianGetDatSoTiepTheo = DateTime.MinValue;
         }
 
         public void LoadAll()
@@ -67,6 +67,8 @@ namespace Client.Views
             {
                 return;
             }
+            pbThoiGian.Value = 0;
+            pbThoiGian.Visible = true;
             wTimer.RunWorkerAsync();
         }
 
@@ -114,7 +116,7 @@ namespace Client.Views
             }
             pbSoDaDat.Value = 0;
             pbSoDaDat.Visible = true;
-            _gioGetSoDaDatTiepTheo = _thoiGian.Hour + 1;
+            _thoiGianGetDatSoTiepTheo = _thoiGian.Date.AddHours(_thoiGian.Hour + 1);
             wSoDaDat.RunWorkerAsync(Properties.Settings.Default.IDNguoiChoi);
         }
 
@@ -157,7 +159,7 @@ namespace Client.Views
             {
                 GetGioServer();
             }
-            if (_gioGetSoDaDatTiepTheo <= _thoiGian.Hour)
+            if (_thoiGianGetDatSoTiepTheo <= _thoiGian)
             {
                 GetSoDaDat();
             }
@@ -181,6 +183,7 @@ namespace Client.Views
             {
                 MessageBox.Show(rs.ErrorMessage, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+            pbThoiGian.Visible = false;
         }
 
         #endregion
@@ -286,7 +289,7 @@ namespace Client.Views
                     item.SubItems.Add(new ListViewItem.ListViewSubItem(item, data.GiaTri.ToStringEx()));
                     item.SubItems.Add(new ListViewItem.ListViewSubItem(item, data.NgayGioDatStr.ToStringEx()));
                     item.SubItems.Add(new ListViewItem.ListViewSubItem(item, data.KetQua.ToStringEx()));
-                    item.SubItems.Add(new ListViewItem.ListViewSubItem(item, ((data.IsTrung ?? false) ? "✔" : "")));
+                    item.SubItems.Add(new ListViewItem.ListViewSubItem(item, data.DaTrungStr.ToStringEx()));
                     lvSoDaDat.Items.Add(item);
                 }
             }
@@ -297,6 +300,6 @@ namespace Client.Views
             pbSoDaDat.Visible = false;
         }
 
-        #endregion        
+        #endregion
     }
 }

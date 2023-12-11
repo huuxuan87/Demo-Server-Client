@@ -13,16 +13,19 @@ using Client.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Client.Config;
 
 namespace Server.Services
 {
     public class DatSoService : IDatSoService
     {
         private readonly IMapper _mapper;
+        private readonly IConfigAppSetting _configAppSetting;
 
-        public DatSoService(IMapper mapper)
+        public DatSoService(IMapper mapper, IConfigAppSetting configAppSetting)
         {
             _mapper = mapper;
+            _configAppSetting = configAppSetting;
         }
 
         public ApiRequestResult DatSo(DatSoModel datSo)
@@ -32,7 +35,7 @@ namespace Server.Services
             // Số đã đặt
             if (datSo.Id == 0)
             {
-                var rsSoDaDat = ApiRequestHelper.Get<List<DatSoResultModel>>($"/api/DatSo/danh-sach?pIDNguoiChoi={datSo.IDNguoiChoi}&pNgay={HttpUtility.UrlEncode(datSo.Ngay.GetValueEx().ToString("yyyy-MM-ddTHH:mm:ss"))}&pGio={datSo.Gio}");
+                var rsSoDaDat = ApiRequestHelper.Get<List<DatSoResultModel>>(_configAppSetting.ApiUrl, $"/api/DatSo/danh-sach?pIDNguoiChoi={datSo.IDNguoiChoi}&pNgay={HttpUtility.UrlEncode(datSo.Ngay.GetValueEx().ToString("yyyy-MM-ddTHH:mm:ss"))}&pGio={datSo.Gio}");
                 if (rsSoDaDat.IsOk)
                 {
                     var soDatDat = rsSoDaDat.Result.FirstOrDefault();
@@ -46,12 +49,12 @@ namespace Server.Services
             // Cập nhật
             if (datSo.Id > 0)
             {
-                var rsDatSo = ApiRequestHelper.Put("/api/DatSo/" + datSo.Id, datSo);
+                var rsDatSo = ApiRequestHelper.Put(_configAppSetting.ApiUrl, "/api/DatSo/" + datSo.Id, datSo);
                 rs = rsDatSo;
             }
             else
             {
-                var rsDatSo = ApiRequestHelper.Post<DatSoModel>("/api/DatSo", datSo);
+                var rsDatSo = ApiRequestHelper.Post<DatSoModel>(_configAppSetting.ApiUrl, "/api/DatSo", datSo);
                 rs = _mapper.Map<ApiRequestResult>(rsDatSo);
             }
 
@@ -69,13 +72,13 @@ namespace Server.Services
             {
                 resource += "&pGio=" + pGioDat;
             }
-            var rs = ApiRequestHelper.Get<List<DatSoResultModel>>(resource);
+            var rs = ApiRequestHelper.Get<List<DatSoResultModel>>(_configAppSetting.ApiUrl, resource);
             return rs;
         }
 
         public ApiRequestResult<DateTime> GetThoiGianServer()
         {
-            var rs = ApiRequestHelper.Get<DateTime>("/api/DatSo/thoi-gian-server");
+            var rs = ApiRequestHelper.Get<DateTime>(_configAppSetting.ApiUrl, "/api/DatSo/thoi-gian-server");
             return rs;
         }
     }
