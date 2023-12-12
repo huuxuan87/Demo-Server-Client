@@ -1,7 +1,9 @@
 ﻿using Autofac;
 using Client.Extensions;
 using Client.Helpers;
+using Client.Hubs;
 using Client.Models;
+using Microsoft.AspNetCore.SignalR.Client;
 using Server.Services;
 using System;
 using System.Collections.Generic;
@@ -22,12 +24,14 @@ namespace Client.Views
 
         private readonly ILifetimeScope _lifetimeScope;
         private readonly INguoiChoiService _nguoiChoiService;
+        private readonly HubConnection _monHub;
 
-        public DangNhapForm(ILifetimeScope lifetimeScope, INguoiChoiService nguoiChoiService)
+        public DangNhapForm(ILifetimeScope lifetimeScope, INguoiChoiService nguoiChoiService, HubConnection monHub)
         {
             InitializeComponent();
             _lifetimeScope = lifetimeScope;
             _nguoiChoiService = nguoiChoiService;
+            _monHub = monHub;
         }
 
         #endregion
@@ -128,6 +132,10 @@ namespace Client.Views
         {
             var rs = _nguoiChoiService.GetNguoiChoiByDienThoai(e.Argument.ToStringEx());
             e.Result = rs;
+            if (rs.IsOk)
+            {
+                _monHub.SendNguoiChoiKetNoiAsync(rs.Result.DienThoai).Wait();
+            }
         }
 
         private void wDangNhap_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

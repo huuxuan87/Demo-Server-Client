@@ -2,8 +2,10 @@
 using AutoMapper;
 using Client.Config;
 using Client.Helpers;
+using Client.Hubs;
 using Client.Models;
 using Client.Views;
+using Microsoft.AspNetCore.SignalR.Client;
 using Server.Services;
 using System;
 using System.Collections.Generic;
@@ -30,6 +32,7 @@ namespace Client
 
             #region Register types
 
+            var appSetting = new ConfigAppSetting();
             builder.RegisterType<NguoiChoiModel>().AsSelf();
             builder.RegisterType<StartForm>().SingleInstance();
             builder.RegisterType<DangKyForm>().SingleInstance();
@@ -38,7 +41,8 @@ namespace Client
             builder.RegisterInstance((new MapperConfiguration(cf => cf.AddProfile<CustomerProfile>())).CreateMapper());
             builder.RegisterType<NguoiChoiService>().As<INguoiChoiService>();
             builder.RegisterType<DatSoService>().As<IDatSoService>();
-            builder.RegisterType<ConfigAppSetting>().As<IConfigAppSetting>().SingleInstance();
+            builder.RegisterInstance<IConfigAppSetting>(appSetting);
+            builder.RegisterInstance(MonHub.Build(appSetting.ApiUrlHub)).As<HubConnection>();
 
             #endregion
 

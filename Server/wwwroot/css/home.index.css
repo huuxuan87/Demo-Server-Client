@@ -1,0 +1,14 @@
+﻿.my-card {
+    width: 250px;
+    margin: 16px; 
+}
+
+.my-card-header {
+
+}
+
+.my-count {
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+}

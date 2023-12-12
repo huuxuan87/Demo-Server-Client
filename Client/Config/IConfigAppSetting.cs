@@ -9,5 +9,6 @@ namespace Client.Config
     public interface IConfigAppSetting
     {
         string ApiUrl { get; }
+        string ApiUrlHub { get; }
     }
 }

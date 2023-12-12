@@ -14,6 +14,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Server.Models;
+using Microsoft.AspNetCore.SignalR.Client;
+using Client.Hubs;
 
 namespace Client.Views
 {
@@ -24,15 +26,17 @@ namespace Client.Views
         private readonly ILifetimeScope _lifetimeScope;
         private readonly INguoiChoiService _nguoiChoiService;
         private readonly IDatSoService _datSoService;
+        private readonly HubConnection _monHub;
         private DateTime _thoiGian;
         private DateTime _thoiGianGetDatSoTiepTheo;
 
-        public MainForm(ILifetimeScope lifetimeScope, INguoiChoiService nguoiChoiService, IDatSoService datSoService)
+        public MainForm(ILifetimeScope lifetimeScope, INguoiChoiService nguoiChoiService, IDatSoService datSoService, HubConnection monHub)
         {
             InitializeComponent();
             _lifetimeScope = lifetimeScope;
             _nguoiChoiService = nguoiChoiService;
             _datSoService = datSoService;
+            _monHub = monHub;
         }
 
         #endregion
@@ -58,7 +62,13 @@ namespace Client.Views
             ResetUI();
             GetGioServer();
             GetThongTin();
-            GetSoDaDat();
+            _monHub.OnNguoiChoiDatSo((client) =>
+            {
+                BeginInvoke(new Action(() =>
+                {
+                    GetSoDaDat();
+                }));
+            });
         }
 
         private void GetGioServer()
@@ -145,6 +155,7 @@ namespace Client.Views
             dangNhapForm.Show();
             dangNhapForm.ResetUI();
             Hide();
+            _monHub.SendNguoiChoiBoKetNoiAsync().Wait();
         }
 
         #endregion
@@ -178,10 +189,6 @@ namespace Client.Views
             {
                 _thoiGian = rs.Result;
                 timerClock.Start();
-            }
-            else
-            {
-                MessageBox.Show(rs.ErrorMessage, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             pbThoiGian.Visible = false;
         }
@@ -247,6 +254,10 @@ namespace Client.Views
             var item = (DatSoModel)e.Argument;
             var rs = _datSoService.DatSo(item);
             e.Result = rs;
+            if (rs.IsOk)
+            {
+                _monHub.SendNguoiChoiDatSoAsync(Properties.Settings.Default.DienThoaiDangNhap).Wait();
+            }
         }
 
         private void wDatSo_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

@@ -10,5 +10,6 @@ namespace Client.Config
     public class ConfigAppSetting : IConfigAppSetting
     {
         public string ApiUrl => ConfigurationManager.AppSettings["apiUrl"];
+        public string ApiUrlHub => ConfigurationManager.AppSettings["apiUrlHub"];
     }
 }

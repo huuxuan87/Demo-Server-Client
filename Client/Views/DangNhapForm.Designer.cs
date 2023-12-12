@@ -78,8 +78,8 @@
             // 
             // pb
             // 
-            this.pb.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pb.Location = new System.Drawing.Point(0, 0);
+            this.pb.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pb.Location = new System.Drawing.Point(0, 150);
             this.pb.MarqueeAnimationSpeed = 1;
             this.pb.Name = "pb";
             this.pb.Size = new System.Drawing.Size(245, 3);
