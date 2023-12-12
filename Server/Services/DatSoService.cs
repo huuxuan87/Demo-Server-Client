@@ -115,56 +115,64 @@ namespace Server.Services
         {
             var now = DateTime.Now;
             var lst = new List<KetQua>();
-            using (var trans = _context.Database.BeginTransaction())
+            using (var trans = await _context.Database.BeginTransactionAsync())
             {
-                // thời gian
-                var ngayTmp = now.Date;
-                var gioTmp = now.Hour;
-                var kqBegin = await _context.KetQua.OrderByDescending(m => m.Ngay).ThenByDescending(m => m.Gio).FirstOrDefaultAsync();
-                if (kqBegin != null)
+                try
                 {
-                    ngayTmp = kqBegin.Ngay.GetValueEx().Date;
-                    gioTmp = kqBegin.Gio.GetValueOrDefault();
-                }
-                else
-                {
-                    var datSoBegin = await _context.DatSo.OrderBy(m => m.Ngay).ThenBy(m => m.Gio).FirstOrDefaultAsync();
-                    if (datSoBegin != null)
+                    // thời gian
+                    var ngayTmp = now.Date;
+                    var gioTmp = now.Hour;
+                    var kqBegin = await _context.KetQua.OrderByDescending(m => m.Ngay).ThenByDescending(m => m.Gio).FirstOrDefaultAsync();
+                    if (kqBegin != null)
                     {
-                        ngayTmp = datSoBegin.Ngay.GetValueEx().Date;
-                        gioTmp = datSoBegin.Gio.GetValueOrDefault();
+                        ngayTmp = kqBegin.Ngay.GetValueEx().Date;
+                        gioTmp = kqBegin.Gio.GetValueOrDefault();
                     }
-                }
-                var start = ngayTmp.AddHours(gioTmp);
-                var end = now.Date.AddHours(now.Hour);
-                var curr = ngayTmp.AddHours(gioTmp);
-
-                // tạo kết quả
-                while (curr <= end)
-                {
-                    var kq = new KetQua();
-                    kq.Ngay = curr.Date;
-                    kq.Gio = curr.Hour;
-                    var isKetQuaExist = await _context.KetQua.AnyAsync(m => m.Ngay == kq.Ngay && m.Gio == kq.Gio);
-                    if (!isKetQuaExist)
+                    else
                     {
-                        var isDatSoExist = await _context.DatSo.AnyAsync(m => m.Ngay == kq.Ngay && m.Gio == kq.Gio);
-                        if (isDatSoExist)
+                        var datSoBegin = await _context.DatSo.OrderBy(m => m.Ngay).ThenBy(m => m.Gio).FirstOrDefaultAsync();
+                        if (datSoBegin != null)
                         {
-                            kq.KetQua1 = _random.Next(0, 9);
-                            kq.DbCommonUpdate(0);
-                            _context.KetQua.Add(kq);
-                            lst.Add(kq);
+                            ngayTmp = datSoBegin.Ngay.GetValueEx().Date;
+                            gioTmp = datSoBegin.Gio.GetValueOrDefault();
                         }
                     }
-                    curr = curr.AddHours(1);
-                }
+                    var start = ngayTmp.AddHours(gioTmp);
+                    var end = now.Date.AddHours(now.Hour);
+                    var curr = ngayTmp.AddHours(gioTmp);
 
-                // lưu
-                if (lst.Count > 0)
+                    // tạo kết quả
+                    while (curr <= end)
+                    {
+                        var kq = new KetQua();
+                        kq.Ngay = curr.Date;
+                        kq.Gio = curr.Hour;
+                        var isKetQuaExist = await _context.KetQua.AnyAsync(m => m.Ngay == kq.Ngay && m.Gio == kq.Gio);
+                        if (!isKetQuaExist)
+                        {
+                            var isDatSoExist = await _context.DatSo.AnyAsync(m => m.Ngay == kq.Ngay && m.Gio == kq.Gio);
+                            if (isDatSoExist)
+                            {
+                                kq.KetQua1 = _random.Next(0, 9);
+                                kq.DbCommonUpdate(0);
+                                _context.KetQua.Add(kq);
+                                lst.Add(kq);
+                            }
+                        }
+                        curr = curr.AddHours(1);
+                    }
+
+                    // lưu
+                    if (lst.Count > 0)
+                    {
+                        var rs = await _context.SaveChangesAsync();
+                        await trans.CommitAsync();
+                    }
+                } 
+                catch (Exception)
                 {
-                    var rs = await _context.SaveChangesAsync();
-                    await trans.CommitAsync();
+                    await trans.RollbackAsync();
+                    throw;
                 }
             }
             return lst;
