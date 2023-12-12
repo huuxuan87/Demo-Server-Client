@@ -24,11 +24,12 @@ Hướng dẫn cài đặt
 ...
 ~~~
 
-3. Client file **App.config** cấu hình địa chỉ gọi API của Server
+3. Client file **App.config** cấu hình địa chỉ gọi API của Server (apiUrl dùng cho trò chơi, apiUrlHub dùng cho Monitoring)
 ~~~
 ...
 <appSettings>
     <add key="apiUrl" value="..." />
+    <add key="apiUrlHub" value="..." />
 ...
 ~~~
 
