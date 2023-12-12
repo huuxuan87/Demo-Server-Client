@@ -45,3 +45,9 @@ Cấu hình **app.config** như project Client
     <add key="apiUrl" value="..." />
 ...
 ~~~
+
+## Monitor performance của ứng dụng
+*Những metrics cần chú ý track:*
+- Thời điểm trong ngày kết nối nhiều nhất
+- API client gọi server nhiều lần
+- API client gọi server phản hồi lâu
