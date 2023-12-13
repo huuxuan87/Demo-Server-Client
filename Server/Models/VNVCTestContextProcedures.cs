@@ -35,7 +35,7 @@ namespace Server.Models
         protected void OnModelCreatingGeneratedProcedures(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<SP_GetDanhSachDatSoResult>().HasNoKey().ToView(null);
-            modelBuilder.Entity<SP_GetDateResult>().HasNoKey().ToView(null);
+            modelBuilder.Entity<SP_TaoKetQuaResult>().HasNoKey().ToView(null);
         }
     }
 
@@ -86,7 +86,7 @@ namespace Server.Models
             return _;
         }
 
-        public virtual async Task<List<SP_GetDateResult>> SP_GetDateAsync(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<SP_TaoKetQuaResult>> SP_TaoKetQuaAsync(DateTime? DenNgay, DateTime? NgayTao, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -97,9 +97,21 @@ namespace Server.Models
 
             var sqlParameters = new []
             {
+                new SqlParameter
+                {
+                    ParameterName = "DenNgay",
+                    Value = DenNgay ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.DateTime,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "NgayTao",
+                    Value = NgayTao ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.DateTime,
+                },
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryAsync<SP_GetDateResult>("EXEC @returnValue = [dbo].[SP_GetDate]", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<SP_TaoKetQuaResult>("EXEC @returnValue = [dbo].[SP_TaoKetQua] @DenNgay, @NgayTao", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 

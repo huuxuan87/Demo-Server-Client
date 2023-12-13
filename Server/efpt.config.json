@@ -31,7 +31,7 @@
          "ObjectType": 1
       },
       {
-         "Name": "[dbo].[SP_GetDate]",
+         "Name": "[dbo].[SP_TaoKetQua]",
          "ObjectType": 1
       }
    ],

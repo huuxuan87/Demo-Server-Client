@@ -207,3 +207,92 @@ BEGIN
     SELECT ThoiGian = GETDATE()
 END
 GO
+/****** Object:  StoredProcedure [dbo].[SP_TaoKetQua]    Script Date: 2023-12-13 11:24:42 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[SP_TaoKetQua]
+    @DenNgay DATETIME,
+	@NgayTao DATETIME
+AS
+-- Tạo kết quả @DenNgay
+BEGIN
+    DECLARE
+		@Ngay DATETIME,
+		@Gio INT,
+		@TuNgay DATETIME
+	DECLARE @TblIDKetQuaMoi TABLE(Id INT)
+
+	-- lấy ngày, giờ
+	IF @DenNgay IS NULL SET @DenNgay = GETDATE()
+	SET @DenNgay = DATEADD(HOUR, DATEPART(HOUR, @DenNgay), CAST(CAST(@DenNgay AS DATE) AS DATETIME))
+
+	SELECT TOP (1) @Ngay = kq.Ngay, @Gio = kq.Gio
+	FROM dbo.KetQua kq 
+	ORDER BY kq.Ngay DESC, kq.Gio DESC
+
+	IF @Ngay IS NULL OR @Gio IS NULL
+	BEGIN
+		SELECT TOP (1) @Ngay = ds.Ngay, @Gio = ds.Gio
+		FROM dbo.DatSo ds 
+		ORDER BY ds.Ngay ASC, ds.Gio ASC
+	END
+
+	IF @Ngay IS NULL OR @Gio IS NULL
+	BEGIN
+		SET @Ngay = CAST(@DenNgay AS DATE)
+		SET @Gio = DATEPART(HOUR, @DenNgay)
+	END
+
+	SET @TuNgay = DATEADD(HOUR, @Gio, CAST(CAST(@Ngay AS DATE) AS DATETIME))
+
+	-- thêm kết quả
+	BEGIN TRANSACTION
+	BEGIN TRY
+		;WITH RecKetQua AS (
+			SELECT NgayGio = @TuNgay
+			UNION ALL
+			SELECT NgayGio = DATEADD(HOUR, 1, r.NgayGio)
+			FROM RecKetQua r
+			WHERE r.NgayGio < @DenNgay
+		)
+
+		INSERT dbo.KetQua (Ngay, Gio, KetQua, NgayTao)
+		OUTPUT Inserted.Id 
+		INTO @TblIDKetQuaMoi(Id)
+		SELECT cr.Ngay, cr.Gio, KetQua = CAST(NULL AS INT), @NgayTao
+		FROM RecKetQua r
+			CROSS APPLY(SELECT 
+				Ngay = CAST(r.NgayGio AS DATE),
+				Gio = DATEPART(HOUR, r.NgayGio)) cR
+		WHERE NOT EXISTS(SELECT 1 FROM dbo.KetQua kq 
+				WHERE kq.Ngay = cR.Ngay AND kq.Gio = cR.Gio)
+			AND EXISTS(SELECT 1 FROM dbo.DatSo ds
+				WHERE ds.Ngay = cR.Ngay AND ds.Gio = cR.Gio)
+		COMMIT TRANSACTION
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION
+		DELETE @TblIDKetQuaMoi
+		DECLARE @ErrorMessage NVARCHAR(4000);
+		DECLARE @ErrorSeverity INT;
+		DECLARE @ErrorState INT;
+
+		SELECT 
+			@ErrorMessage = ERROR_MESSAGE() + ' ' +
+				'ERROR_NUMBER=' + CAST(ERROR_NUMBER() AS VARCHAR(5)) + ' ' +
+				'ERROR_LINE=' + CAST(ERROR_LINE() AS VARCHAR(5)),
+			@ErrorSeverity = ERROR_SEVERITY(),
+			@ErrorState = ERROR_STATE();
+
+		RAISERROR (@ErrorMessage,
+				   @ErrorSeverity,
+				   @ErrorState
+				   );
+	END CATCH
+	
+	-- trả về Id kết quả
+	SELECT Id FROM @TblIDKetQuaMoi
+END
+GO

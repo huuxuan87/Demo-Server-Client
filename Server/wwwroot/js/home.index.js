@@ -44,11 +44,13 @@
 
         let countAppDangChay = $('#countAppDangChay');
         let countNguoiDangChoi = $('#countNguoiDangChoi');
-        let lstNguoiChoi = lstAppConnect.filter(m => (m.dienThoai != null && m.dienThoai != ''));
-        let objGroupNguoiChoi = Object.groupBy(lstNguoiChoi, ({ dienThoai }) => dienThoai);
+        let countDienThoai = $('#countDienThoai');
+        let lstDienThoai = lstAppConnect.filter(m => (m.dienThoai != null && m.dienThoai != ''));
+        let objGroupNguoiChoi = Object.groupBy(lstDienThoai, ({ dienThoai }) => dienThoai);
 
         countAppDangChay.html(lstAppConnect.length);
-        countNguoiDangChoi.html(Object.keys(objGroupNguoiChoi).length);
+        countNguoiDangChoi.html(lstDienThoai.length);
+        countDienThoai.html(Object.keys(objGroupNguoiChoi).length);
     });
 
     // Start the connection.

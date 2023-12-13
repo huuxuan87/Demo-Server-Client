@@ -13,6 +13,6 @@ namespace Server.Models
     public partial interface IVNVCTestContextProcedures
     {
         Task<List<SP_GetDanhSachDatSoResult>> SP_GetDanhSachDatSoAsync(int? IDNguoiChoi, DateTime? NgayDat, int? GioDat, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
-        Task<List<SP_GetDateResult>> SP_GetDateAsync(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<SP_TaoKetQuaResult>> SP_TaoKetQuaAsync(DateTime? DenNgay, DateTime? NgayTao, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
     }
 }

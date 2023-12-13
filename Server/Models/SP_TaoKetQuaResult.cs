@@ -5,8 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Server.Models
 {
-    public partial class SP_GetDateResult
+    public partial class SP_TaoKetQuaResult
     {
-        public DateTime ThoiGian { get; set; }
+        public int? Id { get; set; }
     }
 }
