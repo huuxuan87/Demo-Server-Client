@@ -100,12 +100,12 @@ BEGIN
     SELECT ThoiGian = GETDATE()
 END
 GO
-/****** Object:  StoredProcedure [dbo].[SP_TaoKetQua]    Script Date: 2023-12-13 12:33:05 PM ******/
+/****** Object:  StoredProcedure [dbo].[SP_TaoKetQua]    Script Date: 2023-12-13 6:00:46 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE PROCEDURE [dbo].[SP_TaoKetQua]
+ALTER PROCEDURE [dbo].[SP_TaoKetQua]
     @DenNgay DATETIME,
 	@NgayTao DATETIME
 AS
@@ -168,24 +168,46 @@ BEGIN
 	BEGIN CATCH
 		ROLLBACK TRANSACTION
 		DELETE @TblKetQuaMoi
-		DECLARE @ErrorMessage NVARCHAR(4000);
-		DECLARE @ErrorSeverity INT;
-		DECLARE @ErrorState INT;
+		--DECLARE @ErrorMessage NVARCHAR(4000);
+		--DECLARE @ErrorSeverity INT;
+		--DECLARE @ErrorState INT;
 
-		SELECT 
-			@ErrorMessage = ERROR_MESSAGE() + ' ' +
-				'ERROR_NUMBER=' + CAST(ERROR_NUMBER() AS VARCHAR(5)) + ' ' +
-				'ERROR_LINE=' + CAST(ERROR_LINE() AS VARCHAR(5)),
-			@ErrorSeverity = ERROR_SEVERITY(),
-			@ErrorState = ERROR_STATE();
+		--SELECT 
+		--	@ErrorMessage = ERROR_MESSAGE() + ' ' +
+		--		'ERROR_NUMBER=' + CAST(ERROR_NUMBER() AS VARCHAR(5)) + ' ' +
+		--		'ERROR_LINE=' + CAST(ERROR_LINE() AS VARCHAR(5)),
+		--	@ErrorSeverity = ERROR_SEVERITY(),
+		--	@ErrorState = ERROR_STATE();
 
-		RAISERROR (@ErrorMessage,
-				   @ErrorSeverity,
-				   @ErrorState
-				   );
+		--RAISERROR (@ErrorMessage,
+		--		   @ErrorSeverity,
+		--		   @ErrorState
+		--		   );
 	END CATCH
+
+	-- random
+	DECLARE cursor_kqMoi CURSOR FOR
+	SELECT Ngay, Gio
+	FROM @TblKetQuaMoi
+
+	OPEN cursor_kqMoi
+
+	DECLARE @cNgay DATETIME, @cGio INT
+
+	FETCH NEXT FROM cursor_kqMoi INTO @cNgay, @cGio
+
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		UPDATE kq 
+		SET kq.KetQua = ABS(CHECKSUM(NEWID())) % 10
+		FROM dbo.KetQua kq
+		WHERE kq.Ngay = @cNgay AND kq.Gio = @cGio
+		FETCH NEXT FROM cursor_kqMoi INTO @cNgay, @cGio
+	END
+
+	CLOSE cursor_kqMoi
+	DEALLOCATE cursor_kqMoi
 	
 	-- trả về Id kết quả
 	SELECT Ngay, Gio FROM @TblKetQuaMoi
 END
-GO

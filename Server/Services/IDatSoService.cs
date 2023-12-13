@@ -9,6 +9,6 @@ namespace Server.Services
         Task<DatSo?> AddOrUpdateDatSo(DatSo? item);
         List<string> CheckErrorsDatSo(DatSo? item);
         DateTime GetDateTimeServer();
-        Task<List<KetQua>> CreateKetQuaRandomToNow();
+        Task<List<SP_TaoKetQuaResult>> CreateKetQuaRandomToNow();
     }
 }

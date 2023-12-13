@@ -111,28 +111,11 @@ namespace Server.Services
             return rs;
         }
 
-        public async Task<List<KetQua>> CreateKetQuaRandomToNow()
+        public async Task<List<SP_TaoKetQuaResult>> CreateKetQuaRandomToNow()
         {
             var now = DateTime.Now;
-            var lst = new List<KetQua>();
             var lstResultKetQua = await _sp.SP_TaoKetQuaAsync(now, now);
-            if (lstResultKetQua.Any())
-            {
-                foreach (var rsKq in lstResultKetQua)
-                {
-                    var kq = await _context.KetQua.FirstOrDefaultAsync(m => m.Ngay == rsKq.Ngay && m.Gio == rsKq.Gio);
-                    if (kq != null)
-                    {
-                        kq.KetQua1 = _random.Next(0, 9);
-                        var rs = await _context.SaveChangesAsync();
-                        if (rs > 0)
-                        {
-                            lst.Add(kq);
-                        }
-                    }
-                }
-            }
-            return lst;
+            return lstResultKetQua;
         }
     }
 }
