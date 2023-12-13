@@ -7,9 +7,8 @@ namespace Server.Models
 {
     public partial class KetQua
     {
-        public int Id { get; set; }
-        public DateTime? Ngay { get; set; }
-        public int? Gio { get; set; }
+        public DateTime Ngay { get; set; }
+        public int Gio { get; set; }
         public int? KetQua1 { get; set; }
         public DateTime? NgayTao { get; set; }
     }

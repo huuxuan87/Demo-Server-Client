@@ -35,9 +35,12 @@ namespace Server.Models
 
             modelBuilder.Entity<KetQua>(entity =>
             {
-                entity.Property(e => e.KetQua1).HasColumnName("KetQua");
+                entity.HasKey(e => new { e.Ngay, e.Gio })
+                    .HasName("PK__KetQua__A79D0681A867E1B4");
 
                 entity.Property(e => e.Ngay).HasColumnType("datetime");
+
+                entity.Property(e => e.KetQua1).HasColumnName("KetQua");
 
                 entity.Property(e => e.NgayTao).HasColumnType("datetime");
             });

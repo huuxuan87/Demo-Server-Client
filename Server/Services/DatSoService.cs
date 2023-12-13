@@ -115,12 +115,12 @@ namespace Server.Services
         {
             var now = DateTime.Now;
             var lst = new List<KetQua>();
-            var lstResultIDKetQua = await _sp.SP_TaoKetQuaAsync(now, now);
-            if (lstResultIDKetQua.Any())
+            var lstResultKetQua = await _sp.SP_TaoKetQuaAsync(now, now);
+            if (lstResultKetQua.Any())
             {
-                foreach (var rsId in lstResultIDKetQua)
+                foreach (var rsKq in lstResultKetQua)
                 {
-                    var kq = await _context.KetQua.FirstOrDefaultAsync(m => m.Id == rsId.Id);
+                    var kq = await _context.KetQua.FirstOrDefaultAsync(m => m.Ngay == rsKq.Ngay && m.Gio == rsKq.Gio);
                     if (kq != null)
                     {
                         kq.KetQua1 = _random.Next(0, 9);

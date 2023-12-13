@@ -7,6 +7,7 @@ namespace Server.Models
 {
     public partial class SP_TaoKetQuaResult
     {
-        public int? Id { get; set; }
+        public DateTime? Ngay { get; set; }
+        public int? Gio { get; set; }
     }
 }
