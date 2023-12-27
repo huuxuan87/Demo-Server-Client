@@ -9,17 +9,13 @@ namespace Server.Services
     {
         private readonly VNVCTestContext _context;
         private readonly IVNVCTestContextProcedures _sp;
-        private readonly IMapper _mapper;
         private readonly ILogger<DatSoService> _logger;
-        private readonly Random _random;
 
-        public DatSoService(VNVCTestContext context, IVNVCTestContextProcedures sp, IMapper mapper, ILogger<DatSoService> logger, Random random)
+        public DatSoService(VNVCTestContext context, IVNVCTestContextProcedures sp, ILogger<DatSoService> logger)
         {
             _context = context;
             _sp = sp;
-            _mapper = mapper;
             _logger = logger;
-            _random = random;
         }
 
         public async Task<DatSo?> AddOrUpdateDatSo(DatSo? item)
@@ -62,29 +58,29 @@ namespace Server.Services
             }
         }
 
-        public List<string> CheckErrorsDatSo(DatSo? datSo)
+        public List<string> CheckErrorsDatSo(DatSo? item)
         {
             var lstError = new List<string>();
             var now = DateTime.Now;
-            if (datSo == null)
+            if (item == null)
             {
                 lstError.Add("Dữ liệu null");
             }
             else
             {
-                if (datSo.IDNguoiChoi == null)
+                if (item.IDNguoiChoi == null)
                 {
                     lstError.Add("Giá trị người chơi bị rỗng");
                 }
-                if (datSo.Ngay == null)
+                if (item.Ngay == null)
                 {
                     lstError.Add("Ngày đặt bị rỗng");
                 }
-                if (datSo.Gio == null || datSo.Gio < 0 || datSo.Gio > 23)
+                if (item.Gio == null || item.Gio < 0 || item.Gio > 23)
                 {
                     lstError.Add("Giờ đặt rỗng hoặc không hợp lệ");
                 }
-                if (datSo.Ngay != now.Date || datSo.Gio != now.Hour + 1)
+                if (item.Ngay != now.Date || item.Gio != now.Hour + 1)
                 {
                     lstError.Add("Thời gian không hợp lệ");
                 }

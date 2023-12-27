@@ -16,12 +16,10 @@ namespace Server.Controllers
     public class NguoiChoiController : ControllerBase
     {
         private readonly INguoiChoiService _service;
-        private readonly IMapper _mapper;
 
-        public NguoiChoiController(INguoiChoiService service, IMapper mapper)
+        public NguoiChoiController(INguoiChoiService service)
         {
             _service = service;
-            _mapper = mapper;
         }
 
         // GET: api/NguoiChoi/0912345678

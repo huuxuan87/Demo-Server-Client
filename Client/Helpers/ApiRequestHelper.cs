@@ -7,6 +7,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 
 namespace Client.Helpers
 {
@@ -111,10 +112,7 @@ namespace Client.Helpers
                 var response = client.Execute(request);
                 rs.Response = response;
 
-                if (response.IsSuccessful)
-                {
-                }
-                else
+                if (!response.IsSuccessful)
                 {
                     rs.Errors = GetErrorResponse(response);
                 }
@@ -139,6 +137,7 @@ namespace Client.Helpers
                 }
                 catch (Exception)
                 {
+                    // lấy List<string> Errors nếu có
                 }
             }
             if (!isGetErrorFinish)

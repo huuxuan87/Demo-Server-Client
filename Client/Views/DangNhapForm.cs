@@ -124,10 +124,6 @@ namespace Client.Views
             DangNhapAction();
         }
 
-        private void DangNhapForm_Shown(object sender, EventArgs e)
-        {
-        }
-
         private void wDangNhap_DoWork(object sender, DoWorkEventArgs e)
         {
             var rs = _nguoiChoiService.GetNguoiChoiByDienThoai(e.Argument.ToStringEx());

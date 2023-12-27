@@ -4,7 +4,6 @@ using Server.Models;
 using Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-var configuration = builder.Configuration;
 var services = builder.Services;
 
 // Database
@@ -17,9 +16,8 @@ services.AddScoped<INguoiChoiService, NguoiChoiService>();
 services.AddScoped<IDatSoService, DatSoService>();
 services.AddScoped<IVNVCTestContextProcedures, VNVCTestContextProcedures>();
 services.AddSingleton(c => new Random());
-services.AddSingleton(c => new MonHubStore());
+services.AddSingleton<IMonHubStore, MonHubStore>();
 
-//services.AddControllers();
 services.AddControllersWithViews();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -56,8 +54,6 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
-
-//app.MapControllers();
 
 app.UseCors("CorsPolicy");
 app.MapHub<MonHub>("/monHub");

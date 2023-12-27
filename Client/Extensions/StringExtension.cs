@@ -22,12 +22,11 @@ namespace Client.Extensions
 
         public static string GetOnlyNumbers(this string str)
         {
-            var rs = str;
             string pattern = "\\D";
-            Regex regex = new Regex(pattern);
+            Regex regex = new Regex(pattern, RegexOptions.None, TimeSpan.FromMilliseconds(100));
 
-            rs = regex.Replace(str, "");
-            return rs;
+            str = regex.Replace(str, "");
+            return str;
         }
 
         public static bool IsFullNameValid(this string str)
@@ -40,7 +39,8 @@ namespace Client.Extensions
             var rs = string.Empty;
             if (str.IsFullNameValid())
             {
-                rs = str.Split(' ').Last();
+                var arr = str.Split(' ');
+                rs = arr[arr.Length - 1];
             }
             return rs;
         }
@@ -59,7 +59,7 @@ namespace Client.Extensions
 
         public static bool IsPhoneNumberValid(this string phoneNumber, string regex = @"^(0[1-9]|84[1-9])(\d{8,9})$")
         {
-            Regex phoneRegex = new Regex(regex);
+            Regex phoneRegex = new Regex(regex, RegexOptions.None, TimeSpan.FromMilliseconds(100));
             return phoneRegex.IsMatch(phoneNumber);
         }
     }

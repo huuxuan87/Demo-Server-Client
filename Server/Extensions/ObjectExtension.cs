@@ -6,13 +6,9 @@ namespace Server.Extensions
     {
         public static void SetPropertyByName(this object obj, string propertyName, object newValue)
         {
-            if (obj == null)
+            if (obj != null)
             {
-                return;
-            }
-            else
-            {
-                PropertyInfo property = obj.GetType().GetProperty(propertyName);
+                var property = obj.GetType().GetProperty(propertyName);
 
                 if (property != null)
                 {

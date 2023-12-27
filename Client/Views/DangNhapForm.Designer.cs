@@ -110,7 +110,6 @@
             this.Text = "Đăng nhập";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.DangNhapForm_FormClosed);
             this.Load += new System.EventHandler(this.DangNhapForm_Load);
-            this.Shown += new System.EventHandler(this.DangNhapForm_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

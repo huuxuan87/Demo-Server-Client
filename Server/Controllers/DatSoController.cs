@@ -61,7 +61,7 @@ namespace Server.Controllers
                 return BadRequest(new { Errors = lstError });
             }
             datSo.DbCommonUpdate(datSo.Id);
-            var rs = await _service.AddOrUpdateDatSo(datSo);
+            await _service.AddOrUpdateDatSo(datSo);
             return CreatedAtAction("GetDatSo", new { id = datSo.Id }, datSo);
         }
 

@@ -7,9 +7,9 @@ namespace Server.Hubs
     {
         #region Init
 
-        private readonly MonHubStore _monHubStore;
+        private readonly IMonHubStore _monHubStore;
 
-        public MonHub(MonHubStore monHubStore)
+        public MonHub(IMonHubStore monHubStore)
         {
             _monHubStore = monHubStore;
         }

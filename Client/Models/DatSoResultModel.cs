@@ -15,6 +15,21 @@ namespace Server.Models
         public int? KetQua { get; set; }
         public bool? IsTrung { get; set; }
         public string NgayGioDatStr { get; set; }
-        public string DaTrungStr => (IsTrung == true) ? "Đã trúng" : (KetQua.HasValue ? "Chưa trúng" : "Đang chờ");
+        public string DaTrungStr 
+        { 
+            get
+            {
+                var rs = "Đang chờ";
+                if (IsTrung == true)
+                {
+                    rs = "Đã trúng";
+                }
+                else if (KetQua.HasValue)
+                {
+                    rs = "Chưa trúng";
+                }
+                return rs;
+            } 
+        }
     }
 }

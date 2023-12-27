@@ -24,7 +24,7 @@ namespace Server.Extensions
         {
             var rs = str.ToStringEx();
             string pattern = "\\D";
-            Regex regex = new Regex(pattern);
+            Regex regex = new Regex(pattern, RegexOptions.None, TimeSpan.FromMilliseconds(100));
 
             rs = regex.Replace(rs, "");
             return rs;
@@ -32,7 +32,7 @@ namespace Server.Extensions
 
         public static bool IsFullNameValid(this string? str)
         {
-            return str.TrimEx().Contains(" ");
+            return str.TrimEx().Contains(' ');
         }
 
         public static string GetLastName(this string? str)
@@ -40,7 +40,8 @@ namespace Server.Extensions
             var rs = string.Empty;
             if (str.IsFullNameValid())
             {
-                rs = str.Split(' ').Last();
+                var arr = str.Split(' ');
+                rs = arr[arr.Length - 1];
             }
             return rs;
         }
@@ -59,7 +60,7 @@ namespace Server.Extensions
 
         public static bool IsPhoneNumberValid(this string? phoneNumber, string regex = @"^(0[1-9]|84[1-9])(\d{8,9})$")
         {
-            Regex phoneRegex = new Regex(regex);
+            Regex phoneRegex = new Regex(regex, RegexOptions.None, TimeSpan.FromMilliseconds(100));
             return phoneRegex.IsMatch(phoneNumber.ToStringEx());
         }
     }

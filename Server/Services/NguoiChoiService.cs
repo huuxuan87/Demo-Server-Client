@@ -7,13 +7,11 @@ namespace Server.Services
     public class NguoiChoiService : INguoiChoiService
     {
         private readonly VNVCTestContext _context;
-        private readonly IMapper _mapper;
         private readonly ILogger<NguoiChoiService> _logger;
 
-        public NguoiChoiService(VNVCTestContext context, IMapper mapper, ILogger<NguoiChoiService> logger)
+        public NguoiChoiService(VNVCTestContext context, ILogger<NguoiChoiService> logger)
         {
             _context = context;
-            _mapper = mapper;
             _logger = logger;
         }
 

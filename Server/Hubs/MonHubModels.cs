@@ -1,14 +1,24 @@
-﻿using System.Threading;
+﻿using AutoMapper;
+using System.Threading;
 
 namespace Server.Hubs
 {
-    public class MonHubStore
+    public interface IMonHubStore
     {
+        List<MonHubUserConnectModel> GetListUserConnect(string? ConnectionId = null, string? DienThoai = null, bool? IsMonitor = null);
+        MonHubUserConnectModel AddOrUpdateUserConnect(string? ConnectionId, string? DienThoai = null, bool? IsMonitor = null);
+        int RemoveUserConnect(string? ConnectionId, string? DienThoai = null, bool? IsMonitor = null);
+    }
+
+    public class MonHubStore : IMonHubStore
+    {
+        private readonly IMapper _mapper;
         private readonly List<MonHubUserConnectModel> _lstUserConnect;
         private readonly object _lockObject;
 
-        public MonHubStore()
+        public MonHubStore(IMapper mapper)
         {
+            _mapper = mapper;
             _lstUserConnect = new List<MonHubUserConnectModel>();
             _lockObject = new object();
         }
@@ -19,7 +29,9 @@ namespace Server.Hubs
             if (!string.IsNullOrEmpty(ConnectionId)) query = query.Where(m => m.ConnectionId == ConnectionId);
             if (!string.IsNullOrEmpty(DienThoai)) query = query.Where(m => m.DienThoai == DienThoai);
             if (IsMonitor.HasValue) query = query.Where(m => (m.IsMonitor ?? false) == IsMonitor);
-            return query.ToList();
+            var lst = query.ToList();
+            var lstRs = _mapper.Map<List<MonHubUserConnectModel>>(lst);
+            return lstRs;
         }
 
         public MonHubUserConnectModel AddOrUpdateUserConnect(string? ConnectionId, string? DienThoai = null, bool? IsMonitor = null)

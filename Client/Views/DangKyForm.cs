@@ -22,15 +22,13 @@ namespace Client.Views
 
         private readonly ILifetimeScope _lifetimeScope;
         private readonly NguoiChoiModel _model;
-        private readonly IMapper _mapper;
         private readonly INguoiChoiService _nguoiChoiService;
 
-        public DangKyForm(ILifetimeScope lifetimeScope, NguoiChoiModel model, IMapper mapper, INguoiChoiService nguoiChoiService)
+        public DangKyForm(ILifetimeScope lifetimeScope, NguoiChoiModel model, INguoiChoiService nguoiChoiService)
         {
             InitializeComponent();
             _lifetimeScope = lifetimeScope;
             _model = model;
-            _mapper = mapper;
             _nguoiChoiService = nguoiChoiService;
         }
 
